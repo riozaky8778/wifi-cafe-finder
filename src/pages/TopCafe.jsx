@@ -56,70 +56,91 @@ const style = `
     padding: 0 20px;
   }
 
-  /* Podium top 3 */
-  .podium-wrap {
-    margin-bottom: 32px;
+  /* Stats bar */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 28px;
   }
+  .stat-card {
+    background: white; border-radius: 14px;
+    padding: 14px; text-align: center;
+    border: 1px solid #F0EDE8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .stat-card-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800; color: #1a1a1a;
+  }
+  .stat-card-label { font-size: 10px; color: #BBB; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* Podium */
+  .podium-wrap { margin-bottom: 32px; }
 
   .podium {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    position: relative; z-index: 10;
-    align-items: end;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: stretch;   /* ← semua kartu sama tinggi */
   }
 
   .podium-card {
-    background: white; border-radius: 20px;
-    padding: 16px 12px; text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    background: white;
+    border-radius: 20px;
+    padding: 20px 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid #F0EDE8;
-    cursor: pointer; transition: transform 0.2s;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
   }
-  .podium-card:hover { transform: translateY(-4px); }
+  .podium-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.14); }
 
   .podium-card.rank-1 {
-    padding: 24px 12px;
-    box-shadow: 0 12px 40px rgba(255,140,97,0.25);
+    box-shadow: 0 8px 32px rgba(255,140,97,0.3);
     border-color: #FDDCBE;
-    background: linear-gradient(180deg, #FFFAF5, white);
+    background: linear-gradient(160deg, #FFFAF5 0%, white 100%);
+    padding-top: 28px;  /* ← lebih lega di atas buat crown */
   }
-  .podium-card.rank-2 { background: linear-gradient(180deg, #F8F8F8, white); }
-  .podium-card.rank-3 { background: linear-gradient(180deg, #FFF8F0, white); }
+  .podium-card.rank-2 { background: linear-gradient(160deg, #F8F8F8, white); }
+  .podium-card.rank-3 { background: linear-gradient(160deg, #FFF8F0, white); }
 
-  .podium-medal { font-size: 28px; margin-bottom: 8px; }
-  .podium-rank-1 .podium-medal { font-size: 36px; }
-
-  .podium-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px; font-weight: 700;
-    color: #1a1a1a; margin-bottom: 6px;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .podium-card.rank-1 .podium-name { font-size: 15px; }
-
-  .podium-score {
-    font-family: 'Syne', sans-serif;
-    font-size: 24px; font-weight: 800;
-    color: #FF8C61;
-  }
-  .podium-card.rank-1 .podium-score { font-size: 30px; }
-  .podium-score-label { font-size: 10px; color: #BBB; font-weight: 600; letter-spacing: 0.5px; }
-
-  .podium-reviews {
-    font-size: 11px; color: #CCC; margin-top: 4px;
-  }
-
-  /* Crown for #1 */
   .crown {
     position: absolute; top: -14px; left: 50%;
     transform: translateX(-50%);
     font-size: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
   }
+
+  .podium-medal { font-size: 26px; line-height: 1; }
+  .podium-card.rank-1 .podium-medal { font-size: 32px; }
+
+  .podium-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px; font-weight: 700;
+    color: #1a1a1a; line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 32px;
+  }
+  .podium-card.rank-1 .podium-name { font-size: 14px; min-height: 38px; }
+
+  .podium-score {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px; font-weight: 800;
+    color: #FF8C61; line-height: 1;
+  }
+  .podium-card.rank-1 .podium-score { font-size: 32px; }
+
+  .podium-score-label { font-size: 9px; color: #BBB; font-weight: 600; letter-spacing: 0.5px; }
+  .podium-reviews { font-size: 10px; color: #CCC; }
 
   /* Section title */
   .top-section-title {
@@ -162,7 +183,7 @@ const style = `
   }
 
   .top-list-scores {
-    display: flex; gap: 8px; align-items: center; flex-shrink: 0;
+    display: flex; gap: 6px; align-items: center; flex-shrink: 0;
   }
   .score-pill {
     font-size: 11px; font-weight: 700;
@@ -208,23 +229,6 @@ const style = `
   .top-divider {
     height: 1px; background: #F0EDE8; margin: 24px 0;
   }
-
-  /* Stats bar */
-  .stats-bar {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 12px; margin-bottom: 28px;
-  }
-  .stat-card {
-    background: white; border-radius: 14px;
-    padding: 14px; text-align: center;
-    border: 1px solid #F0EDE8;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .stat-card-val {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px; font-weight: 800; color: #1a1a1a;
-  }
-  .stat-card-label { font-size: 10px; color: #BBB; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
 `
 
 const MEDALS = ['🥇', '🥈', '🥉']
@@ -235,7 +239,6 @@ export default function TopCafe() {
 
   useEffect(() => { fetchCafes() }, [])
 
-  // Sort by avg_wifi descending, filter yang ada rating
   const ranked = [...cafes]
     .filter((c) => c.avg_wifi !== null && c.avg_wifi !== undefined)
     .sort((a, b) => (b.avg_wifi ?? 0) - (a.avg_wifi ?? 0))
@@ -248,12 +251,14 @@ export default function TopCafe() {
     : '–'
   const totalReviews = cafes.reduce((a, c) => a + (c.review_count || 0), 0)
 
+  // urutan podium: #2 kiri, #1 tengah, #3 kanan
+  const podiumOrder = [1, 0, 2]
+
   return (
     <>
       <style>{style}</style>
       <div className="top-root">
 
-        {/* Hero */}
         <div className="top-hero">
           <button className="top-back" onClick={() => navigate('/')}>← Kembali</button>
           <p className="top-hero-eyebrow">Pekanbaru · WiFi Cafe Finder</p>
@@ -302,7 +307,7 @@ export default function TopCafe() {
                 <div className="podium-wrap">
                   <p className="top-section-title">🏆 Podium Teratas</p>
                   <div className="podium">
-                    {[1, 0, 2].map((idx) => {
+                    {podiumOrder.map((idx) => {
                       const cafe = top3[idx]
                       if (!cafe) return <div key={idx} />
                       const rank = idx + 1
