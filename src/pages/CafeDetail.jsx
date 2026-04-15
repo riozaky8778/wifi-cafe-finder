@@ -183,7 +183,7 @@ const style = `
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 18px;
+  margin-top: 24px;
   margin-bottom: 14px;
 }
   .section-title {
