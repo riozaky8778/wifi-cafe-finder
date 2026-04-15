@@ -21,7 +21,8 @@ const style = `
   /* ── HERO ── */
   .detail-hero {
     position: relative;
-    height: 240px;
+    height: 260px;
+    padding-bottom: 20px;
     overflow: hidden;
     background: linear-gradient(135deg, #FDEBD0 0%, #FDD9B5 40%, #F9C49A 100%);
   }
@@ -117,7 +118,7 @@ const style = `
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 18px;
   position: relative;
   z-index: 20;
   margin-bottom: 24px;
