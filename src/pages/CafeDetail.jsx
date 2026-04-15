@@ -7,18 +7,27 @@ import DetailMap from '../components/DetailMap'
 const style = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
+  * { box-sizing: border-box; }
+
   .detail-root {
     font-family: 'DM Sans', sans-serif;
     background: #FAF8F5;
     min-height: 100vh;
     padding-bottom: 60px;
+    width: 100%;
+    overflow-x: hidden;
   }
 
+  /* ── HERO ── */
   .detail-hero {
     position: relative;
-    height: 260px;
+    height: 240px;
     overflow: hidden;
     background: linear-gradient(135deg, #FDEBD0 0%, #FDD9B5 40%, #F9C49A 100%);
+  }
+
+  @media (min-width: 480px) {
+    .detail-hero { height: 280px; }
   }
 
   .detail-hero img {
@@ -27,20 +36,20 @@ const style = `
 
   .hero-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.45) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.55) 100%);
   }
 
   .hero-emoji {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 72px;
+    font-size: 64px;
     filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12));
   }
 
   .hero-top-bar {
     position: absolute; top: 0; left: 0; right: 0;
     display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 16px 20px;
+    padding: 14px 16px;
     z-index: 10;
   }
 
@@ -49,92 +58,129 @@ const style = `
     background: rgba(255,255,255,0.92);
     backdrop-filter: blur(12px);
     border: none; border-radius: 50px;
-    padding: 8px 16px; font-size: 13px;
+    padding: 8px 14px; font-size: 13px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500; color: #333;
     cursor: pointer;
     box-shadow: 0 2px 12px rgba(0,0,0,0.1);
     transition: all 0.2s;
+    white-space: nowrap;
   }
   .btn-back:hover { background: white; transform: translateX(-2px); }
 
   .badge-open {
     background: #1D9E75; color: white;
     font-size: 11px; font-weight: 600;
-    padding: 5px 12px; border-radius: 50px;
+    padding: 6px 12px; border-radius: 50px;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 8px rgba(29,158,117,0.35);
+    white-space: nowrap;
   }
 
   .hero-bottom-info {
     position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 0 24px 22px;
+    padding: 0 16px 18px;
     z-index: 10;
   }
 
   .hero-cafe-name {
     font-family: 'Syne', sans-serif;
-    font-size: 28px; font-weight: 800;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 800;
     color: white;
     margin: 0 0 4px;
     text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    line-height: 1.2;
+    word-break: break-word;
   }
 
   .hero-address {
-    font-size: 13px; color: rgba(255,255,255,0.85);
-    margin: 0; display: flex; align-items: center; gap: 5px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    line-height: 1.4;
   }
 
+  /* ── BODY ── */
   .detail-body {
-    max-width: 600px; margin: 0 auto;
-    padding: 0 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 14px;
   }
 
-  /* Score Cards */
+  /* ── SCORE CARDS ── */
   .score-row {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 12px; margin-top: -28px; position: relative; z-index: 20;
-    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: -24px;
+    position: relative;
+    z-index: 20;
+    margin-bottom: 24px;
   }
 
   .score-card {
     background: white;
-    border-radius: 16px;
-    padding: 16px 10px;
+    border-radius: 14px;
+    padding: 14px 8px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     border: 1px solid rgba(255,255,255,0.8);
     transition: transform 0.2s;
+    min-width: 0; /* prevent overflow */
   }
   .score-card:hover { transform: translateY(-2px); }
 
-  .score-icon { font-size: 22px; margin-bottom: 6px; }
+  .score-icon {
+    font-size: 20px;
+    margin-bottom: 5px;
+    display: block;
+  }
+
   .score-value {
     font-family: 'Syne', sans-serif;
-    font-size: 32px; font-weight: 800;
-    line-height: 1; margin-bottom: 4px;
+    font-size: clamp(22px, 6vw, 32px);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+    display: block;
   }
-  .score-label { font-size: 11px; color: #999; font-weight: 500; letter-spacing: 0.3px; }
 
-  /* Section */
+  .score-label {
+    font-size: clamp(9px, 2.5vw, 11px);
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── SECTION ── */
   .section-header {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .section-title {
     font-family: 'Syne', sans-serif;
-    font-size: 16px; font-weight: 700; color: #1a1a1a;
+    font-size: 15px; font-weight: 700; color: #1a1a1a;
   }
   .section-count {
-    font-size: 12px; color: #999; font-weight: 500;
+    font-size: 11px; color: #999; font-weight: 500;
     background: #F0EDE8; padding: 3px 10px; border-radius: 20px;
+    white-space: nowrap;
   }
 
-  /* Review Card */
+  /* ── REVIEW CARD ── */
   .review-card {
     background: white;
-    border-radius: 16px;
-    padding: 18px;
+    border-radius: 14px;
+    padding: 16px;
     margin-bottom: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     border: 1px solid #F0EDE8;
@@ -143,25 +189,32 @@ const style = `
   .review-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.09); }
 
   .review-top {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
   }
 
-  .reviewer-info { display: flex; align-items: center; gap: 10px; }
+  .reviewer-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
 
   .avatar {
     width: 36px; height: 36px; border-radius: 50%;
     background: linear-gradient(135deg, #FF8C61, #F05D5E);
     color: white; display: flex; align-items: center; justify-content: center;
     font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
+    flex-shrink: 0;
   }
 
-  .reviewer-name { font-size: 13px; font-weight: 600; color: #333; }
+  .reviewer-name {
+    font-size: 13px; font-weight: 600; color: #333;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .review-date { font-size: 11px; color: #bbb; margin-top: 1px; }
 
   .review-comment {
-    font-size: 13.5px; color: #555;
-    line-height: 1.65; margin: 10px 0;
+    font-size: 13px; color: #555;
+    line-height: 1.65; margin: 8px 0 0;
   }
 
   .review-photos {
@@ -181,21 +234,19 @@ const style = `
     letter-spacing: 0.3px;
   }
 
-  /* Empty state */
+  /* ── EMPTY STATE ── */
   .empty-state {
-    text-align: center; padding: 40px 20px;
+    text-align: center; padding: 36px 20px;
     color: #bbb;
   }
-  .empty-icon { font-size: 40px; margin-bottom: 10px; }
-  .empty-text { font-size: 14px; }
+  .empty-icon { font-size: 36px; margin-bottom: 10px; }
+  .empty-text { font-size: 13px; }
 
-  /* CTA */
-  .cta-section {
-    margin-top: 24px;
-  }
+  /* ── CTA ── */
+  .cta-section { margin-top: 24px; }
 
   .btn-review {
-    width: 100%; padding: 16px;
+    width: 100%; padding: 15px;
     background: linear-gradient(135deg, #FF8C61, #F05D5E);
     border: none; border-radius: 14px;
     color: white; font-size: 15px;
@@ -211,12 +262,11 @@ const style = `
   }
   .btn-review:active { transform: translateY(0); }
 
-  /* Divider */
+  /* ── MISC ── */
   .divider {
-    height: 1px; background: #F0EDE8; margin: 24px 0;
+    height: 1px; background: #F0EDE8; margin: 20px 0;
   }
 
-  /* Loading */
   .loading-screen {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
     font-family: 'DM Sans', sans-serif; color: #aaa; font-size: 14px;
@@ -294,9 +344,9 @@ export default function CafeDetail() {
           <div className="score-row">
             {scores.map(({ icon, label, val, color }) => (
               <div className="score-card" key={label}>
-                <div className="score-icon">{icon}</div>
-                <div className="score-value" style={{ color }}>{val ?? '–'}</div>
-                <div className="score-label">{label}</div>
+                <span className="score-icon">{icon}</span>
+                <span className="score-value" style={{ color }}>{val ?? '–'}</span>
+                <span className="score-label">{label}</span>
               </div>
             ))}
           </div>
@@ -324,12 +374,12 @@ export default function CafeDetail() {
               <div className="review-top">
                 <div className="reviewer-info">
                   {r.user_photo
-                    ? <img src={r.user_photo} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} />
+                    ? <img src={r.user_photo} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
                     : <div className="avatar">
                         {(r.user_name ?? r.user_id ?? 'AN').slice(0, 2).toUpperCase()}
                       </div>
                   }
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <div className="reviewer-name">{r.user_name ?? 'Pengunjung'}</div>
                     <div className="review-date">
                       {r.created_at?.toDate
@@ -340,7 +390,7 @@ export default function CafeDetail() {
                     </div>
                   </div>
                 </div>
-                <StarRating value={r.wifi_score} readOnly size={15} />
+                <StarRating value={r.wifi_score} readOnly size={14} />
               </div>
 
               {r.comment && <p className="review-comment">{r.comment}</p>}
