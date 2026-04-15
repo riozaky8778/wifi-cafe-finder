@@ -404,7 +404,9 @@ export default function CafeDetail() {
           <div className="divider" />
 
           {/* Map */}
-          <DetailMap cafe={cafe} />
+          <div style={{ marginBottom: 28 }}>
+			  <DetailMap cafe={cafe} />
+			</div>
 
           {/* Reviews */}
           <div className="section-header">
