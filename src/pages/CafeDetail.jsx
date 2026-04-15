@@ -117,7 +117,7 @@ const style = `
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin-top: -8px;
+  margin-top: 8px;
   position: relative;
   z-index: 20;
   margin-bottom: 24px;
