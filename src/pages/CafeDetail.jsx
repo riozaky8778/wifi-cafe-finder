@@ -187,9 +187,13 @@ const style = `
   margin-bottom: 14px;
 }
   .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px; font-weight: 700; color: #1a1a1a;
-  }
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.5;
+  padding-top: 2px;
+}
   .section-count {
     font-size: 11px; color: #999; font-weight: 500;
     background: #F0EDE8; padding: 3px 10px; border-radius: 20px;
