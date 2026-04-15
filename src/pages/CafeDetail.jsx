@@ -187,8 +187,8 @@ const style = `
   margin-bottom: 14px;
 }
   .section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 24px;
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.5;
