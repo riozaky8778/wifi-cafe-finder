@@ -113,26 +113,24 @@ const style = `
   }
 
   /* ── SCORE CARDS ── */
-  .score-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: -24px;
-    position: relative;
-    z-index: 20;
-    margin-bottom: 24px;
-  }
+.score-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: -8px;
+  position: relative;
+  z-index: 20;
+  margin-bottom: 24px;
+}
 
   .score-card {
-    background: white;
-    border-radius: 14px;
-    padding: 14px 8px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border: 1px solid rgba(255,255,255,0.8);
-    transition: transform 0.2s;
-    min-width: 0; /* prevent overflow */
-  }
+  background: white;
+  border-radius: 18px;
+  padding: 16px 10px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255,255,255,0.9);
+}
   .score-card:hover { transform: translateY(-2px); }
 
   .score-icon {
