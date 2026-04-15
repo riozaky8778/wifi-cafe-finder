@@ -13,18 +13,19 @@ L.Icon.Default.mergeOptions({
 })
 
 const style = `
-  .cafe-map-wrap {
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #F0EDE8;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    margin-bottom: 20px;
-  }
-  .cafe-map-wrap .leaflet-container {
-    height: 220px;
-    width: 100%;
-    font-family: 'DM Sans', sans-serif;
-  }
+ .cafe-map-wrap {
+  border-radius: 16px;
+  border: 1px solid #F0EDE8;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+.cafe-map-wrap .leaflet-container {
+  height: 220px;
+  width: 100%;
+  border-radius: 16px;    /* ← pindah ke sini */
+  overflow: hidden;       /* ← pindah ke sini */
+  font-family: 'DM Sans', sans-serif;
+}
   .cafe-map-popup .leaflet-popup-content-wrapper {
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.12);
