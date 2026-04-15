@@ -20,6 +20,7 @@ const style = `
   .btn-maps {
   width: 100%;
   margin-top: 12px;
+  margin-bottom: 20px;
   padding: 14px;
   border: 1px solid #E8E2DA;
   border-radius: 14px;
@@ -178,10 +179,13 @@ const style = `
   }
 
   /* ── SECTION ── */
-  .section-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px;
-  }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  margin-bottom: 14px;
+}
   .section-title {
     font-family: 'Syne', sans-serif;
     font-size: 15px; font-weight: 700; color: #1a1a1a;
@@ -401,9 +405,6 @@ export default function CafeDetail() {
 
           {/* Map */}
           <DetailMap cafe={cafe} />
-			<button className="btn-maps" onClick={openMaps}>
-			  🗺️ Buka di Google Maps
-			</button>
 
           {/* Reviews */}
           <div className="section-header">
