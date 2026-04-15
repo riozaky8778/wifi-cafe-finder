@@ -18,6 +18,8 @@ const style = `
   border: 1px solid #F0EDE8;
   box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 .cafe-map-wrap .leaflet-container {
   height: 220px;
