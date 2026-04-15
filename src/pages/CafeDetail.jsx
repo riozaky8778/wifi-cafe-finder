@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useCafeStore } from '../store/cafeStore'
 import StarRating from '../components/StarRating'
@@ -242,19 +242,27 @@ const style = `
   .empty-text { font-size: 13px; }
 
   /* ── CTA ── */
-  .cta-section { margin-top: 24px; }
+  .cta-section {
+  position: sticky;
+  bottom: 12px;
+  margin-top: 24px;
+  padding-top: 12px;
+  background: linear-gradient(to top, #FAF8F5 70%, transparent);
+}
 
   .btn-review {
-    width: 100%; padding: 15px;
-    background: linear-gradient(135deg, #FF8C61, #F05D5E);
-    border: none; border-radius: 14px;
-    color: white; font-size: 15px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700; cursor: pointer;
-    box-shadow: 0 6px 24px rgba(240,93,94,0.35);
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #FF8C61, #F05D5E);
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 16px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(240,93,94,0.25);
+}
   .btn-review:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 32px rgba(240,93,94,0.45);
@@ -266,6 +274,21 @@ const style = `
     height: 1px; background: #F0EDE8; margin: 20px 0;
   }
 
+  .image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 16px;
+}	
   .loading-screen {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
     font-family: 'DM Sans', sans-serif; color: #aaa; font-size: 14px;
@@ -284,6 +307,8 @@ const style = `
 export default function CafeDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [previewImage, setPreviewImage] = useState(null)
+
   const { selectedCafe, selectCafe, loading } = useCafeStore()
 
   useEffect(() => { selectCafe(id) }, [id])
@@ -397,7 +422,14 @@ export default function CafeDetail() {
               {r.photo_urls?.length > 0 && (
                 <div className="review-photos">
                   {r.photo_urls.map((url, idx) => (
-                    <img key={idx} src={url} alt={`Foto ${idx + 1}`} className="review-photo" />
+                    <img
+  key={idx}
+  src={url}
+  alt={`Foto ${idx + 1}`}
+  className="review-photo"
+  onClick={() => setPreviewImage(url)}
+  style={{ cursor: 'pointer' }}
+/>
                   ))}
                 </div>
               )}
@@ -418,7 +450,14 @@ export default function CafeDetail() {
             </button>
           </div>
         </div>
-
+	        {previewImage && (
+          <div
+            className="image-modal"
+            onClick={() => setPreviewImage(null)}
+          >
+            <img src={previewImage} alt="Preview" />
+          </div>
+        )}
       </div>
     </>
   )
