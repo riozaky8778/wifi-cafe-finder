@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment variables (JANGAN diupload ke GitHub!)
+.env
+.env.local
+.env.production
+
+# Build output
+dist/
+dist-ssr/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
