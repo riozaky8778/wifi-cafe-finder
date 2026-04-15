@@ -17,6 +17,23 @@ const style = `
     width: 100%;
     overflow-x: hidden;
   }
+  .btn-maps {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #E8E2DA;
+  border-radius: 14px;
+  background: white;
+  color: #333;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+.btn-maps:hover {
+  transform: translateY(-1px);
+}
 
   /* ── HERO ── */
   .detail-hero {
@@ -304,6 +321,7 @@ const style = `
   @keyframes spin { to { transform: rotate(360deg); } }
 `
 
+
 export default function CafeDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -331,6 +349,10 @@ export default function CafeDetail() {
     { icon: '🔇', label: 'Kondusif', val: cafe.avg_noise, color: '#7B5EA7' },
     { icon: '☕', label: 'Vibe', val: cafe.avg_vibe, color: '#1D9E75' },
   ]
+  const openMaps = () => {
+  const query = encodeURIComponent(`${cafe.name} ${cafe.address || ''}`)
+  window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank')
+}
 
   return (
     <>
@@ -379,6 +401,9 @@ export default function CafeDetail() {
 
           {/* Map */}
           <DetailMap cafe={cafe} />
+			<button className="btn-maps" onClick={openMaps}>
+			  🗺️ Buka di Google Maps
+			</button>
 
           {/* Reviews */}
           <div className="section-header">
