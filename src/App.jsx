@@ -9,6 +9,7 @@ import ReviewForm from './pages/ReviewForm'
 import AddCafe from './pages/AddCafe'
 import Login from './pages/Login'
 import TopCafe from './pages/TopCafe'
+import AdminPage from './pages/AdminPage'
 
 export default function App() {
   const setUser = useCafeStore((s) => s.setUser)
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/tambah" element={<AddCafe />} />
         <Route path="/login" element={<Login />} />
         <Route path="/top" element={<TopCafe />} />
+		<Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   )
