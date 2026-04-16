@@ -72,12 +72,35 @@ export const useCafeStore = create((set, get) => ({
       set({ error: e.message, loading: false })
     }
   },
+  
+  // Fetch semua cafe published (untuk admin)
+fetchPublishedCafes: async () => {
+  set({ loading: true })
+  try {
+    const snap = await getDocs(
+      query(
+        collection(db, 'cafes'),
+        where('status', '==', 'published'),
+        orderBy('created_at', 'desc')
+      )
+    )
+    const publishedCafes = snap.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }))
+    set({ publishedCafes, loading: false })
+  } catch (e) {
+    set({ error: e.message, loading: false })
+  }
+},
 
   // Approve cafe
   approveCafe: async (cafeId) => {
-    await updateDoc(doc(db, 'cafes', cafeId), { status: 'published' })
-    await get().fetchPendingCafes()
-  },
+  await updateDoc(doc(db, 'cafes', cafeId), { status: 'published' })
+  await get().fetchPendingCafes()
+  await get().fetchPublishedCafes()
+  await get().fetchCafes()
+},
 
   // Reject & hapus cafe
   rejectCafe: async (cafeId) => {
