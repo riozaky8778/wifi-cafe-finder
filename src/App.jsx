@@ -10,6 +10,7 @@ import AddCafe from './pages/AddCafe'
 import Login from './pages/Login'
 import TopCafe from './pages/TopCafe'
 import AdminPage from './pages/AdminPage'
+import AdminLogin from './pages/AdminLogin'
 
 export default function App() {
   const setUser = useCafeStore((s) => s.setUser)
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/top" element={<TopCafe />} />
 		<Route path="/admin" element={<AdminPage />} />
+		<Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
     </BrowserRouter>
   )

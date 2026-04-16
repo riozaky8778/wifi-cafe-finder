@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useCafeStore } from '../store/cafeStore'
 
 const style = `
@@ -206,32 +206,8 @@ export default function AdminPage() {
     await deleteCafe(id)
   }
 
-  if (!user) {
-    return (
-      <>
-        <style>{style}</style>
-        <div className="forbidden">
-          <div className="forbidden-icon">🔐</div>
-          <p className="forbidden-title">Belum login</p>
-          <p className="forbidden-text">Silakan login dulu untuk mengakses halaman ini.</p>
-          <button className="btn-back-admin" onClick={() => navigate('/')}>← Ke beranda</button>
-        </div>
-      </>
-    )
-  }
-
-  if (!isAdmin()) {
-    return (
-      <>
-        <style>{style}</style>
-        <div className="forbidden">
-          <div className="forbidden-icon">🚫</div>
-          <p className="forbidden-title">Akses ditolak</p>
-          <p className="forbidden-text">Halaman ini hanya untuk admin.</p>
-          <button className="btn-back-admin" onClick={() => navigate('/')}>← Ke beranda</button>
-        </div>
-      </>
-    )
+  if (!user || !isAdmin()) {
+    return <Navigate to="/admin-login" replace />
   }
 
   return (
