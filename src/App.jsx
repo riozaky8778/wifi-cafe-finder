@@ -12,6 +12,7 @@ import TopCafe from './pages/TopCafe'
 import AdminPage from './pages/AdminPage'
 import AdminLogin from './pages/AdminLogin'
 import MyCafes from './pages/MyCafes'
+import Profile from './pages/Profile'
 
 export default function App() {
   const setUser = useCafeStore((s) => s.setUser)
@@ -34,7 +35,8 @@ export default function App() {
         <Route path="/top" element={<TopCafe />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/my-cafes" element={<MyCafes />} />  {/* ← TAMBAH INI */}
+        <Route path="/my-cafes" element={<MyCafes />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   )
