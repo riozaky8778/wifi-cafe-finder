@@ -20,6 +20,7 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState('Semua')
   const [search, setSearch] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => { fetchCafes() }, [])
@@ -32,6 +33,11 @@ export default function Home() {
     return matchSearch
   })
 
+  const handleLogout = async () => {
+    await signOut(auth)
+    setShowLogoutModal(false)
+  }
+
   return (
     <>
       <style>{`
@@ -43,6 +49,95 @@ export default function Home() {
           background: #FAFAFA;
           min-height: 100vh;
         }
+
+        /* ── LOGOUT MODAL ── */
+        .modal-backdrop {
+          position: fixed; inset: 0;
+          background: rgba(0,0,0,0.45);
+          backdrop-filter: blur(4px);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+
+        .modal-card {
+          background: white;
+          border-radius: 24px;
+          padding: 32px 28px 24px;
+          max-width: 340px;
+          width: 100%;
+          text-align: center;
+          box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+          animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px) scale(0.96); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-icon {
+          font-size: 44px;
+          margin-bottom: 14px;
+          display: block;
+        }
+
+        .modal-title {
+          font-family: 'Fredoka', sans-serif;
+          font-size: 22px;
+          font-weight: 700;
+          color: #2D2D2D;
+          margin-bottom: 8px;
+        }
+
+        .modal-sub {
+          font-size: 14px;
+          color: #999;
+          font-weight: 600;
+          line-height: 1.5;
+          margin-bottom: 24px;
+        }
+
+        .modal-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+
+        .btn-cancel {
+          padding: 12px;
+          border-radius: 14px;
+          border: 2px solid #EEE;
+          background: #FAFAFA;
+          font-size: 14px;
+          font-weight: 700;
+          font-family: 'Nunito', sans-serif;
+          color: #888;
+          cursor: pointer;
+          transition: all 0.15s;
+        }
+        .btn-cancel:hover { background: #F0F0F0; border-color: #DDD; }
+
+        .btn-logout-confirm {
+          padding: 12px;
+          border-radius: 14px;
+          border: none;
+          background: linear-gradient(135deg, #FF6B6B, #F05D5E);
+          font-size: 14px;
+          font-weight: 700;
+          font-family: 'Nunito', sans-serif;
+          color: white;
+          cursor: pointer;
+          transition: all 0.15s;
+          box-shadow: 0 4px 14px rgba(240,93,94,0.35);
+        }
+        .btn-logout-confirm:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(240,93,94,0.45); }
 
         /* ── NAVBAR ── */
         .navbar {
@@ -237,17 +332,13 @@ export default function Home() {
           z-index: 1;
         }
 
-        .stat {
-          text-align: center;
-        }
-
+        .stat { text-align: center; }
         .stat-num {
           font-family: 'Fredoka', sans-serif;
           font-size: 24px;
           font-weight: 700;
           color: #2D2D2D;
         }
-
         .stat-label {
           font-size: 11px;
           color: #AAA;
@@ -279,11 +370,7 @@ export default function Home() {
           color: #2D2D2D;
         }
 
-        .filters {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
+        .filters { display: flex; gap: 8px; flex-wrap: wrap; }
 
         .filter-btn {
           display: flex;
@@ -480,6 +567,25 @@ export default function Home() {
         }
       `}</style>
 
+      {/* LOGOUT CONFIRMATION MODAL */}
+      {showLogoutModal && (
+        <div className="modal-backdrop" onClick={() => setShowLogoutModal(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <span className="modal-icon">👋</span>
+            <div className="modal-title">Mau keluar dulu?</div>
+            <p className="modal-sub">Kamu akan logout dari akun<br /><strong>{user?.displayName ?? user?.email}</strong></p>
+            <div className="modal-actions">
+              <button className="btn-cancel" onClick={() => setShowLogoutModal(false)}>
+                Batal
+              </button>
+              <button className="btn-logout-confirm" onClick={handleLogout}>
+                Ya, Keluar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* NAVBAR */}
       <nav className="navbar">
         <div className="nav-brand">
@@ -503,7 +609,9 @@ export default function Home() {
                 </span>
               </div>
               <button className="nav-cta" onClick={() => navigate('/tambah')}>+ Tambah Cafe</button>
-              <button className="nav-link" onClick={() => signOut(auth)} style={{ color: '#E24B4A' }}>Keluar</button>
+              <button className="nav-link" onClick={() => setShowLogoutModal(true)} style={{ color: '#E24B4A' }}>
+                Keluar
+              </button>
             </>
           ) : (
             <>
