@@ -40,11 +40,18 @@ export const useCafeStore = create((set, get) => ({
     } catch (e) { set({ error: e.message, loading: false }) }
   },
 
+  // ✅ FIX: fetch SEMUA status cafe milik user (pending + published + rejected)
   fetchMyCafes: async () => {
     const user = get().user
     if (!user?.email) return set({ myCafes: [] })
     try {
-      const snap = await getDocs(query(collection(db, 'cafes'), where('status', '==', 'pending'), where('submitted_by', '==', user.email), orderBy('created_at', 'desc')))
+      const snap = await getDocs(
+        query(
+          collection(db, 'cafes'),
+          where('submitted_by', '==', user.email),
+          orderBy('created_at', 'desc')
+        )
+      )
       set({ myCafes: snap.docs.map((d) => ({ id: d.id, ...d.data() })) })
     } catch (e) { console.warn('fetchMyCafes:', e.message); set({ myCafes: [] }) }
   },
