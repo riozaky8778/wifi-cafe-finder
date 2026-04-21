@@ -26,6 +26,9 @@ export default function Home() {
   useEffect(() => { fetchCafes() }, [])
   useEffect(() => { if (user) fetchMyCafes() }, [user])
 
+  // ✅ FIX: hanya tampilkan yang masih pending
+  const pendingMyCafes = myCafes.filter(c => c.status === 'pending')
+
   const filtered = cafes.filter((c) => {
     const matchSearch = c.name.toLowerCase().includes(search.toLowerCase())
     if (activeFilter === 'WiFi Kenceng') return matchSearch && c.avg_wifi >= 4
@@ -112,58 +115,47 @@ export default function Home() {
 
         /* PENDING CARD */
         .cafe-card-pending { background: #F5F5F5; border-radius: 20px; padding: 20px; border: 2px dashed #DDD; position: relative; overflow: hidden; cursor: default; }
-        .pending-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.015) 10px, rgba(0,0,0,0.015) 20px); pointer-events: none; border-radius: 18px; }
-        .pending-chip { display: inline-flex; align-items: center; gap: 5px; background: #FFF3CC; color: #B07800; border: 1.5px solid #FFD966; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 20px; font-family: 'Nunito', sans-serif; white-space: nowrap; animation: blink 2s ease-in-out infinite; }
-        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
-
-        /* NORMAL CARD */
-        .cafe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-        .cafe-card { background: white; border-radius: 20px; padding: 20px; cursor: pointer; border: 2px solid #F5F0FF; transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s; position: relative; overflow: hidden; }
-        .cafe-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #DDD; }
-        .card-blob { position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; border-radius: 50%; opacity: 0.15; }
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .card-name { font-family: 'Fredoka', sans-serif; font-size: 19px; font-weight: 600; color: #2D2D2D; flex: 1; padding-right: 8px; line-height: 1.2; }
-        .card-name-muted { font-family: 'Fredoka', sans-serif; font-size: 19px; font-weight: 600; color: #AAAAAA; flex: 1; padding-right: 8px; line-height: 1.2; }
-        .card-badge { font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 20px; font-family: 'Fredoka', sans-serif; letter-spacing: 0.5px; white-space: nowrap; }
-        .card-address { font-size: 12px; color: #AAA; font-weight: 600; margin-bottom: 14px; display: flex; align-items: flex-start; gap: 4px; line-height: 1.4; }
+        .pending-stripe { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: repeating-linear-gradient(90deg, #FFD93D 0px, #FFD93D 12px, transparent 12px, transparent 20px); }
+        .card-blob { position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; opacity: 0.08; }
+        .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+        .card-name-muted { font-family: 'Fredoka', sans-serif; font-size: 17px; font-weight: 700; color: #AAA; }
+        .pending-chip { font-size: 10px; font-weight: 800; background: #FFF3CC; color: #B07800; border: 1.5px solid #FFE066; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .card-address { font-size: 12px; color: #CCC; font-weight: 600; margin-bottom: 14px; }
         .card-ratings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
-        .rating-box { background: #FAFAFA; border-radius: 12px; padding: 8px 6px; text-align: center; border: 1.5px solid #F0F0F0; }
-        .rating-box-muted { background: #F0F0F0; border-radius: 12px; padding: 8px 6px; text-align: center; border: 1.5px solid #E8E8E8; }
-        .rating-emoji { font-size: 14px; margin-bottom: 2px; }
-        .rating-val { font-family: 'Fredoka', sans-serif; font-size: 18px; font-weight: 700; line-height: 1; }
-        .rating-label { font-size: 9px; color: #BBB; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; }
-        .review-count { font-size: 12px; color: #AAA; font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .card-arrow { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: transform 0.15s; }
-        .cafe-card:hover .card-arrow { transform: translateX(3px); }
+        .rating-box { background: #F8F8F8; border-radius: 12px; padding: 10px 8px; text-align: center; }
+        .rating-box-muted { background: #F0F0F0; border-radius: 12px; padding: 10px 8px; text-align: center; }
+        .rating-emoji { font-size: 18px; margin-bottom: 4px; }
+        .rating-val { font-family: 'Fredoka', sans-serif; font-size: 18px; font-weight: 700; }
+        .rating-label { font-size: 10px; color: #AAA; font-weight: 700; text-transform: uppercase; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; }
+        .review-count { font-size: 12px; color: #AAA; font-weight: 700; }
+
+        /* CAFE GRID */
+        .cafe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .cafe-card { background: white; border-radius: 20px; padding: 20px; border: 2px solid #F0EDE8; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.18s, box-shadow 0.18s; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+        .cafe-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+        .card-name { font-family: 'Fredoka', sans-serif; font-size: 17px; font-weight: 700; color: #2D2D2D; }
+        .card-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .card-arrow { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
 
         /* LOADING / EMPTY */
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; }
-        .empty-emoji { font-size: 56px; margin-bottom: 16px; }
-        .empty-text { font-size: 16px; font-weight: 700; color: #CCC; }
-        .loading-wrap { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 4rem 0; }
+        .loading-wrap { grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 48px 0; }
         .dots { display: flex; gap: 8px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; animation: boing 0.7s ease-in-out infinite; }
-        .dot:nth-child(1) { background: #FF6B6B; animation-delay: 0s; }
-        .dot:nth-child(2) { background: #FFD93D; animation-delay: 0.12s; }
-        .dot:nth-child(3) { background: #6BCB77; animation-delay: 0.24s; }
-        @keyframes boing { 0%,100% { transform: translateY(0) scale(1); } 40% { transform: translateY(-10px) scale(1.1); } }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #FFD93D; animation: bounce 1s infinite; }
+        .dot:nth-child(2) { animation-delay: 0.15s; background: #FF9A3C; }
+        .dot:nth-child(3) { animation-delay: 0.3s; background: #FF6B6B; }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .empty-state { grid-column: 1/-1; text-align: center; padding: 48px 0; }
+        .empty-emoji { font-size: 48px; margin-bottom: 12px; }
+        .empty-text { font-size: 15px; color: #AAA; font-weight: 600; line-height: 1.6; }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-          .navbar { padding: 0 1rem; }
+        /* MOBILE */
+        @media (max-width: 600px) {
           .nav-links { display: none; }
           .hamburger { display: flex; }
-          .hero { padding: 2.5rem 1rem 2rem; }
-          .hero-stats { gap: 1.5rem; }
-          .main { padding: 1.5rem 1rem 4rem; }
-          .section-header { flex-direction: column; align-items: flex-start; }
-          .cafe-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-          .hero-title { font-size: 26px; }
-          .hero-stats { gap: 1rem; }
-          .stat-num { font-size: 20px; }
+          .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: white; padding: 16px; border-bottom: 2px solid #F0EBF8; box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 999; }
+          .hero { padding: 2rem 1rem 2rem; }
+          .main { padding: 1.5rem 1rem 3rem; }
         }
       `}</style>
 
@@ -172,8 +164,8 @@ export default function Home() {
         <div className="modal-backdrop" onClick={() => setShowLogoutModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <span className="modal-icon">👋</span>
-            <div className="modal-title">Mau keluar dulu?</div>
-            <p className="modal-sub">Kamu akan logout dari akun<br /><strong>{user?.displayName ?? user?.email}</strong></p>
+            <h2 className="modal-title">Keluar dulu nih?</h2>
+            <p className="modal-sub">Kamu bakal keluar dari akun.<br />Sampai jumpa lagi!</p>
             <div className="modal-actions">
               <button className="btn-cancel" onClick={() => setShowLogoutModal(false)}>Batal</button>
               <button className="btn-logout-confirm" onClick={handleLogout}>Ya, Keluar</button>
@@ -184,55 +176,40 @@ export default function Home() {
 
       {/* NAVBAR */}
       <nav className="navbar">
-        <div className="nav-brand">
+        <a className="nav-brand" href="/">
           <div className="nav-logo">☕</div>
           WiFi Finder
-        </div>
-        <div className="nav-links">
-          <button className="nav-link">Tentang</button>
+        </a>
+        <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+          <button className="nav-link" onClick={() => navigate('/tentang')}>Tentang</button>
           <button className="nav-link" onClick={() => navigate('/top')}>Top Cafe</button>
+          {user && (
+            <button className="nav-link" onClick={() => navigate('/my-cafes')}>Cafe Saya</button>
+          )}
           {user ? (
             <>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 {user.photoURL
-                  ? <img src={user.photoURL} alt="" style={{ width: 32, height: 32, borderRadius: '50%', border: '2px solid #FF9A3C' }} />
-                  : <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B6B, #FF9A3C)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: 13 }}>
-                      {user.displayName?.charAt(0) ?? user.email?.charAt(0) ?? 'U'}
-                    </div>
+                  ? <img src={user.photoURL} style={{ width: 24, height: 24, borderRadius: '50%' }} alt="" />
+                  : <span style={{ width: 24, height: 24, borderRadius: '50%', background: '#FF6B6B', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 12, fontWeight: 700 }}>{user.displayName?.[0] ?? '?'}</span>
                 }
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#555', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {user.displayName?.split(' ')[0] ?? 'User'}
-                </span>
-              </div>
-              <button className="nav-cta" onClick={() => navigate('/tambah')}>+ Tambah Cafe</button>
-              <button className="nav-link" onClick={() => setShowLogoutModal(true)} style={{ color: '#E24B4A' }}>Keluar</button>
+                {user.displayName?.split(' ')[0]}
+              </button>
+              <button className="nav-link" onClick={() => setShowLogoutModal(true)}>Keluar</button>
             </>
           ) : (
-            <>
-              <button className="nav-link" onClick={() => navigate('/login')}>Login</button>
-              <button className="nav-cta" onClick={() => navigate('/tambah')}>+ Tambah Cafe</button>
-            </>
+            <button className="nav-link" onClick={() => navigate('/login')}>Login</button>
           )}
+          <button className="nav-cta" onClick={() => navigate('/tambah')}>+ Tambah Cafe</button>
         </div>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           <span /><span /><span />
         </button>
       </nav>
 
-      {menuOpen && (
-        <div style={{ background: 'white', borderBottom: '2px solid #F0EBF8', padding: '1rem', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <button className="nav-link" style={{ textAlign: 'left' }}>Tentang</button>
-          <button className="nav-link" style={{ textAlign: 'left' }}>Top Cafe</button>
-          <button className="nav-cta" onClick={() => { navigate('/tambah'); setMenuOpen(false) }}>+ Tambah Cafe</button>
-        </div>
-      )}
-
       {/* HERO */}
       <section className="hero">
-        <h1 className="hero-title">
-          Temukan Cafe dengan<br />
-          <span className="highlight">WiFi Terbaik</span> di Kotamu
-        </h1>
+        <h1 className="hero-title">Cari Cafe WiFi <span className="highlight">Kenceng</span><br />buat Ngerjain Tugas ☕</h1>
         <p className="hero-sub">Rating jujur dari sesama remote worker & pelajar ☕</p>
         <div className="hero-search-wrap">
           <span className="search-icon-abs">🔍</span>
@@ -248,19 +225,19 @@ export default function Home() {
       {/* MAIN */}
       <main className="main">
 
-        {/* PENDING CAFE MILIK USER */}
-        {user && myCafes.length > 0 && (
+        {/* PENDING CAFE MILIK USER — ✅ pakai pendingMyCafes bukan myCafes */}
+        {user && pendingMyCafes.length > 0 && (
           <div style={{ marginBottom: 36 }}>
             <div className="pending-banner">
               <span className="pending-banner-icon">⏳</span>
               <div className="pending-banner-text">
-                Kamu punya <span>{myCafes.length} cafe</span> yang sedang menunggu review admin.
+                Kamu punya <span>{pendingMyCafes.length} cafe</span> yang sedang menunggu review admin.
                 Cafe akan tampil di daftar utama setelah disetujui.
               </div>
             </div>
             <p className="pending-section-title">⏳ Menunggu Persetujuan Admin</p>
             <div className="cafe-grid">
-              {myCafes.map((cafe) => (
+              {pendingMyCafes.map((cafe) => (
                 <div key={cafe.id} className="cafe-card-pending">
                   <div className="pending-stripe" />
                   <div className="card-blob" style={{ background: '#CCCCCC' }} />
